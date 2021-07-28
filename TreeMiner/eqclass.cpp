@@ -24,8 +24,16 @@ bool Eqnode::find_in_tlist(vector<int> &par, int lit,
 ostream & operator<<(ostream& ostr, Eqnode& eqn){
    int *fidx = Dbase_Ctrl_Blk::FreqIdx;
    //ostr << fidx[eqn.val] << " (" << eqn.pos << ") - " << eqn.sup << endl;
-   ostr << fidx[eqn.val] << " - " << eqn.sup << endl;
-   if (output_idlist) ostr << eqn.tlist;
+   ostr << fidx[eqn.val] << " (" << eqn.sup << ")" << endl;
+   if (output_idlist) {
+      ostr << "Tree: ";
+      for(idnode idn : eqn.tlist) {
+         ostr << idn.cid << " ";
+      }
+         
+   }
+   ostr << endl;
+   // ostr << eqn.tlist;
    return ostr;
 }
 

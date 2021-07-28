@@ -180,7 +180,7 @@ void get_F1()
       if (itcnt[it_order[i]] >= MINSUPPORT) {
          //if (output) cout << i << " " << it_order[i] 
          //                 << " - " << itcnt[it_order[i]] << endl;
-         if (output) cout << i << " - " << itcnt[it_order[i]] << endl;
+         // if (output) cout << i << " - " << itcnt[it_order[i]] << endl;
          DCB->FreqIdx[j] = it_order[i];
          DCB->FreqMap[it_order[i]] = j;
          j++;
@@ -702,15 +702,15 @@ int main(int argc, char **argv)
    //DCB->print_vertical();
    get_Fk(*F2list);
 
-   for (int i=0; i < stats.size(); i++){
-      cout << "F" << i+1 << " - ";
-      cout << stats[i].numlarge << " " << stats[i].numcand << endl;
-   }
+   // for (int i=0; i < stats.size(); i++){
+   //    cout << "F" << i+1 << " - ";
+   //    cout << stats[i].numlarge << " " << stats[i].numcand << endl;
+   // }
    
    double tottime = tt.Stop();
    stats.tottime = tottime;
 
-   cout << stats << endl;
+   // cout << stats << endl;
    
    cout << "TIME = " << tottime << endl;
 
