@@ -24,6 +24,7 @@ double MINSUP_PER;
 int MINSUPPORT=-1;
 int DBASE_MAXITEM;
 int DBASE_NUM_TRANS;
+int MAX_ITER = -1;
 
 //default flags
 bool output = false; //don't print freq subtrees
@@ -55,42 +56,45 @@ void parse_args(int argc, char **argv)
    if (argc < 2)
      cout << "usage: treeminer -i<infile> -s <support>\n";
    else{
-     while ((c=getopt(argc,argv,"a:bfi:lop:s:S:uz:"))!=-1){
+     while ((c=getopt(argc,argv,"a:bfi:lop:s:S:m:uz:"))!=-1){
        switch(c){
-       case 'a':
-          alg_type = (alg_vals) atoi(optarg);
-          break;
-       case 'b':
-          Dbase_Ctrl_Blk::binary_input= true;
-          break;
-        case 'f':
-          use_fullpath = true;
-          break;
-       case 'i': //input files
-	 sprintf(infile,"%s",optarg);
-	 break;
-       case 'l': //print idlists along with freq subtrees
-          output=true;
-          output_idlist = true;
-          break;
-       case 'o': //print freq subtrees
-	 output = true;
-	 break;
-       case 'p':
-          prune_type = (prune_vals) atoi(optarg);
-          break;
+         case 'a':
+            alg_type = (alg_vals) atoi(optarg);
+            break;
+         case 'b':
+            Dbase_Ctrl_Blk::binary_input= true;
+            break;
+         case 'f':
+            use_fullpath = true;
+            break;
+         case 'i': //input files
+            sprintf(infile,"%s",optarg);
+            break;
+         case 'l': //print idlists along with freq subtrees
+            output=true;
+            output_idlist = true;
+            break;
+         case 'o': //print freq subtrees
+            output = true;
+            break;
+         case 'p':
+            prune_type = (prune_vals) atoi(optarg);
+            break;
         case 's': //support value for L2
-	 MINSUP_PER = atof(optarg);
-	 break;
-       case 'S': //absolute support
-	 MINSUPPORT = atoi(optarg);
-	 break;
-       case 'u': //count support multiple times per tree
-	 count_unique = false;
-	 break;
-       case 'z':
-          sort_type = (sort_vals) atoi(optarg);
-          break;
+            MINSUP_PER = atof(optarg);
+            break;
+         case 'S': //absolute support
+            MINSUPPORT = atoi(optarg);
+            break;
+         case 'm':  // max iteration
+            MAX_ITER = atoi(optarg);
+            break;
+         case 'u': //count support multiple times per tree
+            count_unique = false;
+            break;
+         case 'z':
+            sort_type = (sort_vals) atoi(optarg);
+            break;
        }               
      }
    }
@@ -638,7 +642,7 @@ void enumerate_freq(Eqclass *eq, int iter)
             cout << *neq;
          }
          if (prune_type == prune) FK.add(iter,neq);
-         enumerate_freq(neq, iter+1);
+         if (MAX_ITER<0 || iter<=MAX_ITER) enumerate_freq(neq, iter+1);
       }
       delete neq;
    }
